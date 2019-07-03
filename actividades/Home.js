@@ -52,35 +52,35 @@ export default class Home extends Component {
         let res;
         try
         {
-        res = await authProvider.autorizar(this.state.correo, this.state.password);
-        await AsyncStorage.setItem('token', res.token);
-        await AsyncStorage.setItem('datosUsuario', JSON.stringify(res.usuario));
+            res = await authProvider.autorizar(this.state.correo, this.state.password);
+            await AsyncStorage.setItem('token', res.token);
+            await AsyncStorage.setItem('datosUsuario', JSON.stringify(res.usuario));
         }
         catch(e)
         {
-        switch(e)
-        {
-            case 502: this.dropDownAlertRef.alertWithType('error', 'Error de servidor'); break;
-            case 500: this.dropDownAlertRef.alertWithType('error', 'Error de servidor'); break;
-            case 400: this.dropDownAlertRef.alertWithType('info', 'Debes enviar correo y contraseña');  break;
-            case 404: this.dropDownAlertRef.alertWithType('info', 'Correo electronico no registrado');  break;
-            case 401: this.dropDownAlertRef.alertWithType('info', 'Contraseña incorrecta');  break;
-            default:  this.dropDownAlertRef.alertWithType('error', 'Error General');
-        }
+            switch(e)
+            {
+                case 502: this.dropDownAlertRef.alertWithType('error', 'Error de servidor'); break;
+                case 500: this.dropDownAlertRef.alertWithType('error', 'Error de servidor'); break;
+                case 400: this.dropDownAlertRef.alertWithType('info', 'Debes enviar correo y contraseña');  break;
+                case 404: this.dropDownAlertRef.alertWithType('info', 'Correo electronico no registrado');  break;
+                case 401: this.dropDownAlertRef.alertWithType('info', 'Contraseña incorrecta');  break;
+                default:  this.dropDownAlertRef.alertWithType('error', 'Error General');
+            }
         }
         finally
         {
-        if(res)
-        {
-            switch(res.usuario.rol)
+            if(res)
             {
-            case 'profesor':
-                    this.props.navigation.navigate('ActividadInicioProfesor')
-                break;
-            case 'estudiante':
-                break;
+                switch(res.usuario.rol)
+                {
+                case 'profesor':
+                        this.props.navigation.navigate('ActividadInicioProfesor')
+                    break;
+                case 'estudiante':
+                    break;
+                }
             }
-        }
         }
     }
 }

@@ -6,13 +6,13 @@ const axios   = require('axios');
 
 exports.obtener = (idCurso) => {
     const url = `${apiconf.url}/cursos/${idCurso}/asistencias`;
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         axios({
             method: 'get',
             url: url,
             headers: {
                 'host' : 'proyecto.moviles.mx',
-                'x-api-key' : AsyncStorage.getItem('token')
+                'x-api-key' : await AsyncStorage.getItem('token')
             }
         })
         .then(response => {
@@ -27,13 +27,13 @@ exports.obtener = (idCurso) => {
 exports.registrarAsistencia = (idAsistente, fecha, idCurso) => {
     const url  = `${apiconf.url}/cursos/${idCurso}/asistencias`;
     const body = { 'asistente' : idAsistente, 'fecha' : fecha };
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         axios({
             method: 'post',
             url: url,
             headers:{
                 'host' : 'proyecto.moviles.mx',
-                'x-api-key' : AsyncStorage.getItem('token')
+                'x-api-key' : await AsyncStorage.getItem('token')
             },
             data: body
         })
@@ -48,13 +48,13 @@ exports.registrarAsistencia = (idAsistente, fecha, idCurso) => {
 
 exports.eliminarAsistencia = (idAsistencia, idCurso) => {
     const url = `${apiconf.url}/cursos/${idCurso}/asistencias/${idAsistencia}`;
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         axios({
             method: 'delete',
             url: url,
             headers:{
                 'host' : 'proyecto.moviles.mx',
-                'x-api-key' : AsyncStorage.getItem('token')
+                'x-api-key' : await AsyncStorage.getItem('token')
             },
         })
         .then(response => {

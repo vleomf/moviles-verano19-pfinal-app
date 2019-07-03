@@ -24,13 +24,11 @@ export default class InicioProfesor extends Component {
     render() {
         return(
             <View style={styles.mainview}>
-                <ScrollView>
-                    <FlatList
-                        data={this.state.hoy}
-                        renderItem={({item}) => <ElementoCurso curso={item}/>}
-                        keyExtractor={item => item.id.toString()}
-                    />
-                </ScrollView>
+                 <FlatList
+                    data={this.state.hoy}
+                    renderItem={({item}) => <ElementoCurso curso={item}/>}
+                    keyExtractor={item => item.id.toString()}
+                />
                 <Button style={styles.botonCrear}
                     onPress={this._CrearCurso}
                 >NUEVO CURSO</Button>
@@ -40,11 +38,10 @@ export default class InicioProfesor extends Component {
     }
 
     _CrearCurso() {
-        console.log('nuevo curso?');
         this.props.navigation.navigate('ActividadNuevoCurso')
     }
 
-    async componentDidMount() {
+    async _ObtenerCursos() {
         try {
             let hoy = await cursosProvider.obtenerHoy();
             let cursos = await cursosProvider.obtener();
@@ -62,6 +59,17 @@ export default class InicioProfesor extends Component {
             }
         }
     }
+
+    componentDidMount() {
+        this.focusListener = this.props.navigation.addListener('didFocus', () => {
+            this._ObtenerCursos()
+        })
+    }
+
+    componentWillUnmount() {
+        this.focusListener.remove()
+    }
+    
 }
 const styles = StyleSheet.create({
     mainview: {
@@ -69,16 +77,13 @@ const styles = StyleSheet.create({
         width: '100%',
         display: 'flex',
         paddingTop: 10,
-        alignItems: 'center'
     },
     botonCrear:{
-        width: '100%',
+        width: '97%',
         color: '#FFFFFF',
         backgroundColor:'#444152',
         margin: 5,
         paddingTop: 5,
         paddingBottom: 5,
-        paddingLeft: 100,
-        paddingRight: 100
     }
 })
